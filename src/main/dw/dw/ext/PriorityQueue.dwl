@@ -16,23 +16,13 @@
    limitations under the License.
  */
 
-type BinomialTree = {
-    data: Any,
-    children: Array<BinomialTree>
-} 
-
-type BinomialQueue = {
-    roots: Array<BinomialTree>
-}
+import * from dw::ext::Types
+import * from pq::internal::tree
 
 var emptyQueue = {
     roots: []
 }
 
-fun newRoot(value): BinomialTree = {
-    data: value,
-    children: []
-}
 
 fun isEmptyQ(q: BinomialQueue): Boolean =
     isEmpty(log(q).roots)
