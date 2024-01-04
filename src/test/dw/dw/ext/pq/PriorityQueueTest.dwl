@@ -18,7 +18,7 @@
 import * from dw::test::Tests
 import * from dw::test::Asserts
 
-import * from dw::ext::PriorityQueue
+import * from dw::ext::pq::PriorityQueue
 ---
 "PriorityQueue" describedBy [
     "isEmptyQ" describedBy [

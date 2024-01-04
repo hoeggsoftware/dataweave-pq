@@ -17,7 +17,7 @@
  %dw 2.0
 
 import * from dw::core::Arrays
-import * from dw::ext::Types
+import * from dw::ext::pq::Types
 
 fun newRoot(value): BinomialTree = {
     data: value,
