@@ -56,6 +56,11 @@ import * from pq::internal::queue
             rank: 0,
             children: []
         }
+        var t2r0 = {
+            data: 200,
+            rank: 0,
+            children: []
+        }
         var t1r1 = {
             data: 500,
             rank: 1,
@@ -73,6 +78,28 @@ import * from pq::internal::queue
             children: [
                 {
                     data: 777,
+                    rank: 0,
+                    children: []
+                }
+            ]
+        }
+        var t1r2 = {
+            data: 1500,
+            rank: 2,
+            children: [
+                {
+                    data: 2500,
+                    rank: 1,
+                    children: [
+                        {
+                            data: 3500,
+                            rank: 0,
+                            children: []
+                        }
+                    ]
+                },
+                {
+                    data: 3000,
                     rank: 0,
                     children: []
                 }
@@ -100,6 +127,29 @@ import * from pq::internal::queue
                         }
                     ]
                 }])
+            },
+            "It should insert a rank 0 tree into a longer queue with a rank 0 tree" in do {
+                ins(t1r0, [t2r0, t1r1]) must equalTo([{
+                    data: t2r0.data,
+                    rank: 2,
+                    children: [
+                        t1r1,
+                        t1r0
+                    ]
+                }])
+            },
+            "It should insert a rank 0 tree into queue with a rank 0 and a rank 2 tree" in do {
+                ins(t1r0, [t2r0, t1r2]) must equalTo([{
+                    data: t2r0.data,
+                    rank: 1,
+                    children: [
+                        {
+                            data: t1r0.data,
+                            rank: 0,
+                            children: []
+                        }
+                    ]
+                }, t1r2])
             }
         ]
     },
