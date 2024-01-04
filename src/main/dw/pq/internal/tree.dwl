@@ -3,6 +3,7 @@ import * from dw::ext::Types
 
 fun newRoot(value): BinomialTree = {
     data: value,
+    rank: 0,
     children: []
 }
 
