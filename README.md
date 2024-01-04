@@ -1,4 +1,5 @@
 # Priority Queues and Related Data Structures
+[![Unit tests](https://github.com/hoeggsoftware/dw-ext-pq/actions/workflows/maven.yml/badge.svg)](https://github.com/hoeggsoftware/dw-ext-pq/actions/workflows/maven.yml)
 
 This is an open source dataweave library to provide some useful data structures for computation in dataweave, including an efficient priority queue.
 
