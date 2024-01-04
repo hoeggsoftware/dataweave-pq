@@ -17,6 +17,11 @@
  %dw 2.0
 
 import * from dw::ext::pq::Types
+import * from pq::internal::queue
 import * from pq::internal::tree
 
-var emptyQueue: BinomialQueue = []
+type PriorityQueue = BinomialQueue
+var emptyQueue: PriorityQueue = []
+
+fun insert(q: PriorityQueue, data: Any): PriorityQueue = 
+  ins(newTree(data), q)

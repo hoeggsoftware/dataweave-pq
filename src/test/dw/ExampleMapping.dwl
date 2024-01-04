@@ -20,4 +20,4 @@ output application/json
 import * from dw::ext::pq::PriorityQueue
 var queue = emptyQueue
 ---
-queue
+insert(queue, 4)

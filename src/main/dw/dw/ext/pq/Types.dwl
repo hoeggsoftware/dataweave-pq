@@ -15,7 +15,7 @@
  */
  
  type BinomialTree = {
-    data: Comparable,
+    data: Any,
     rank: Number,
     children: Array<BinomialTree>
 } 

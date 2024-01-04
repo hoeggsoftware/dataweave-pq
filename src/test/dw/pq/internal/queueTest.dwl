@@ -188,7 +188,7 @@ var t1r2 = {
         },
         "It should give the smallest value of a root" in do {
             findMin([t1r0, t1r1, t1r2]) must equalTo(t1r1.data)
-        }
+        },
     ],
     "deleteMin" describedBy [
         "It should do nothing for an empty queue" in do {

@@ -19,6 +19,7 @@ import * from dw::test::Tests
 import * from dw::test::Asserts
 
 import * from pq::internal::tree
+
 ---
 "tree" describedBy [
     "isValidBinomialTree" describedBy [
@@ -110,36 +111,20 @@ import * from pq::internal::tree
         }
     ],
     do {
-        var t1R0 = {
-            data: 1,
-            rank: 0,
-            children: []
-        }
-        var t2R0 = {
-            data: 3,
-            rank: 0,
-            children: []
-        }
+        var t1R0 = newTree(1)
+        var t2R0 = newTree(3)
         var t1R1 = {
             data: 0,
             rank: 1,
             children: [
-                {
-                    data: 4,
-                    rank: 0,
-                    children: []
-                }
+                newTree(4)
             ]
         }
         var t2R1 = {
             data: 2,
             rank: 1,
             children: [
-                {
-                    data: 100,
-                    rank: 0,
-                    children: []
-                }
+                newTree(100)
             ]
         }
         ---
@@ -149,11 +134,7 @@ import * from pq::internal::tree
                     data: 1,
                     rank: 1,
                     children: [
-                        {
-                            data: 3,
-                            rank: 0,
-                            children: []
-                        }
+                        newTree(3)
                     ]
                 })
             },
@@ -162,11 +143,7 @@ import * from pq::internal::tree
                     data: 1,
                     rank: 1,
                     children: [
-                        {
-                            data: 3,
-                            rank: 0,
-                            children: []
-                        }
+                        newTree(3)
                     ]
                 })            
             },
@@ -179,21 +156,42 @@ import * from pq::internal::tree
                             data: 2,
                             rank: 1,
                             children: [
-                                {
-                                    data: 100,
-                                    rank: 0,
-                                    children: []
-                                }
+                                newTree(100)
                             ]
                         },
-                        {
-                            data: 4,
-                            rank: 0,
-                            children: []
-                        }
+                        newTree(4)
                     ]
                 })
-            }
+            },
         ]
     },
+    do {
+        var t1R1 = {
+            data: {someField: 4},
+            rank: 1,
+            children: [
+                newTree({someField: 3})
+            ]
+        }
+        var t2R1 = {
+            data: {someField: 100},
+            rank: 1,
+            children: [
+                newTree({someField: 5})
+            ]
+        }
+        ---
+        "linkBy" describedBy [
+            "It should link trees using criteria" in do {
+                linkBy(t1R1, t2R1, (value) -> (-1 * value.someField)) must equalTo({
+                    data: {someField: 100},
+                    rank: 2,
+                    children: [
+                        t1R1,
+                        newTree({someField: 5})
+                    ]
+                })
+            },
+        ]
+    }
 ]

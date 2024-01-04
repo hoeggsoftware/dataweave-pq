@@ -19,7 +19,7 @@
 import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 
-fun newTree(value): BinomialTree = {
+fun newTree<T>(value: T): BinomialTree = {
     data: value,
     rank: 0,
     children: []
@@ -36,10 +36,15 @@ fun isValidBinomialTree(tree: BinomialTree, rank: Number = -1): Boolean = do {
 }
 
 @Internal(permits=["pq::"])
-fun link(t1:BinomialTree, t2: BinomialTree): BinomialTree =
-    if (t1.data > t2.data) link(t2, t1)
+fun link(t1: BinomialTree, t2: BinomialTree): BinomialTree =
+    linkBy(t1, t2, (item) -> item as Comparable)
+
+@Internal(permits=["pq::"])
+fun linkBy<T>(t1:BinomialTree, t2: BinomialTree, criteria: (value: T) -> Comparable): BinomialTree = do {
+    if (criteria(t1.data) > criteria(t2.data)) linkBy(t2, t1, criteria)
     else {
         data: t1.data,
         rank: t1.rank + 1,
         children: t2 >> t1.children
     }
+}
