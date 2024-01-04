@@ -20,5 +20,3 @@ import * from dw::ext::pq::Types
 import * from pq::internal::tree
 
 var emptyQueue: BinomialQueue = []
----
-emptyQueue

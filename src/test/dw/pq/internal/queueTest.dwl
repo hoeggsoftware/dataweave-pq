@@ -33,20 +33,14 @@ import * from pq::internal::queue
             "Empty should be valid" in do {
                 isValidBinomialQueue([]) must equalTo(true)
             },
-            "Single null should be valid" in do {
-                isValidBinomialQueue([null]) must equalTo(true)
-            },
             "Single rank 0 tree should be valid" in do {
                 isValidBinomialQueue([treeR0]) must equalTo(true)
             },
             "Rank 0 tree in position 1 should not be valid" in do {
-                isValidBinomialQueue([null, treeR0]) must equalTo(false)
+                isValidBinomialQueue([treeR0, treeR0]) must equalTo(false)
             },
             "Rank 1 tree in position 0 should not be valid" in do {
                 isValidBinomialQueue([treeR1]) must equalTo(false)
-            },
-            "Rank 2 tree in position 2 should be valid" in do {
-                isValidBinomialQueue([null, null, treeR2]) must equalTo(true)
             },
             "all three trees should be valid" in do {
                 isValidBinomialQueue([treeR0, treeR1, treeR2]) must equalTo(true)
@@ -55,5 +49,58 @@ import * from pq::internal::queue
                 isValidBinomialQueue([treeR0, treeR2, treeR1]) must equalTo(false)
             }
         ]
-    }
+    },
+    do {
+        var t1r0 = {
+            data: 1000,
+            rank: 0,
+            children: []
+        }
+        var t1r1 = {
+            data: 500,
+            rank: 1,
+            children: [
+                {
+                    data: 4000,
+                    rank: 0,
+                    children: []
+                }
+            ]
+        }
+        var t2r1 = {
+            data: 250,
+            rank: 1,
+            children: [
+                {
+                    data: 777,
+                    rank: 0,
+                    children: []
+                }
+            ]
+        }
+        ---
+        /** ins expects the tree rank to be <= the lowest tree rank in the queue */
+        "ins" describedBy [
+            "It should insert a rank 0 tree into an empty queue" in do {
+                ins(t1r0, []) must equalTo([t1r0])
+            },
+            "It should insert a rank 0 tree into a queue with one rank 1 tree" in do {
+                ins(t1r0, [t1r1]) must equalTo([t1r0, t1r1])
+            },
+            "It should insert a rank 1 tree into a queue with one rank 1 tree" in do {
+                ins(t1r1, [t2r1]) must equalTo([{
+                    data: 250,
+                    rank: 2,
+                    children: [
+                        t1r1,
+                        {
+                            data: 777,
+                            rank: 0,
+                            children: []
+                        }
+                    ]
+                }])
+            }
+        ]
+    },
 ]

@@ -20,4 +20,4 @@
     children: Array<BinomialTree>
 } 
 
-type BinomialQueue = Array<BinomialTree | Null>
+type BinomialQueue = Array<BinomialTree>

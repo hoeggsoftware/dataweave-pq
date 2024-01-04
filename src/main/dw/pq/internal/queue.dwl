@@ -19,8 +19,12 @@ import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 import * from pq::internal::tree
 
-fun isValidBinomialQueueRoot(t: Null, index: Number) = true
 fun isValidBinomialQueueRoot(t: BinomialTree, index: Number) = isValidBinomialTree(t, index)
 
 fun isValidBinomialQueue(q: BinomialQueue): Boolean = 
   (q map (t, index) -> isValidBinomialQueueRoot(t, index)) every $
+
+fun ins(t: BinomialTree, q: BinomialQueue): BinomialQueue =
+  if(isEmpty(q)) [t]
+  else if (t.rank < q[0].rank) t >> q
+  else ins(link(t, q[0]), q[1 to -1])
