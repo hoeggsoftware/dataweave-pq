@@ -1,4 +1,4 @@
-# Functional Priority Queues and Related Data Structures
+# Priority Queues and Related Data Structures
 
 This is an open source dataweave library to provide some useful data structures for computation in dataweave, including an efficient priority queue.
 

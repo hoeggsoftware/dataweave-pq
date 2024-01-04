@@ -2,5 +2,6 @@
 output application/json
 
 import * from dw::ext::PriorityQueue
+var queue = emptyQueue
 ---
-tree
+isEmptyQ(insertQ(emptyQueue, 1))

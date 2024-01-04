@@ -16,9 +16,28 @@
    limitations under the License.
  */
 
-type BinomialTree<ValueType> = {
-    data: ValueType,
-    children: Array<BinomialTree<ValueType>>
+type BinomialTree = {
+    data: Any,
+    children: Array<BinomialTree>
+} 
+
+type BinomialQueue = {
+    roots: Array<BinomialTree>
 }
 
-var tree = null
+var emptyQueue = {
+    roots: []
+}
+
+fun newRoot(value): BinomialTree = {
+    data: value,
+    children: []
+}
+
+fun isEmptyQ(q: BinomialQueue): Boolean =
+    isEmpty(log(q).roots)
+
+fun insertQ(q: BinomialQueue, value): BinomialQueue =
+    {
+        roots: q.roots << newRoot(value)
+    }
