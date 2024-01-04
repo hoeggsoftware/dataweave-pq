@@ -151,24 +151,24 @@ var t1r2 = {
             }, t1r2])
         }
     ],
-    "meld" describedBy [
+    "meldBy" describedBy [
         "It should meld two empty queues into one empty queue" in do {
-            meld([], []) must beEmpty()
+            meldBy([], [], coerceCriteria) must beEmpty()
         },
         "It should meld a queue with an empty queue" in do {
-            meld([t1r0, t1r1], []) must equalTo([t1r0, t1r1])
+            meldBy([t1r0, t1r1], [], coerceCriteria) must equalTo([t1r0, t1r1])
         },
         "It should meld an empty queue with a queue" in do {
-            meld([], [t2r0, t1r1]) must equalTo([t2r0, t1r1])
+            meldBy([], [t2r0, t1r1], coerceCriteria) must equalTo([t2r0, t1r1])
         },
         "It should prepend a single lower rank tree to a queue with only higher ranks" in do {
-            meld([t1r0], [t1r1, t1r2]) must equalTo([t1r0, t1r1, t1r2])
+            meldBy([t1r0], [t1r1, t1r2], coerceCriteria) must equalTo([t1r0, t1r1, t1r2])
         },
         "It should produce a valid queue with trees sorted by ranks from each of the inputs" in do {
-            meld([t1r0, t1r2], [t1r1]) must equalTo([t1r0, t1r1, t1r2])
+            meldBy([t1r0, t1r2], [t1r1], coerceCriteria) must equalTo([t1r0, t1r1, t1r2])
         },
         "It should produce a valid queue when each input has the same lowest rank" in do {
-            meld([t1r0, t1r2], [t2r0, t1r1]) must equalTo([{
+            meldBy([t1r0, t1r2], [t2r0, t1r1], coerceCriteria) must equalTo([{
                 data: 200,
                 rank: 3,
                 children: [
@@ -179,29 +179,29 @@ var t1r2 = {
             }])
         }
     ],
-    "findMin" describedBy [
+    "findMinBy" describedBy [
         "It should return null for an empty queue" in do {
-            findMin([]) must beNull()
+            findMinBy([], coerceCriteria) must beNull()
         },
         "it should return the value of the only member" in do {
-            findMin([t1r0]) must equalTo(t1r0.data)
+            findMinBy([t1r0], coerceCriteria) must equalTo(t1r0.data)
         },
         "It should give the smallest value of a root" in do {
-            findMin([t1r0, t1r1, t1r2]) must equalTo(t1r1.data)
+            findMinBy([t1r0, t1r1, t1r2], coerceCriteria) must equalTo(t1r1.data)
         },
     ],
-    "deleteMin" describedBy [
+    "deleteMinBy" describedBy [
         "It should do nothing for an empty queue" in do {
-            deleteMin([]) must beEmpty()
+            deleteMinBy([], coerceCriteria) must beEmpty()
         },
         "It should produce empty queue for a single node" in do {
-            deleteMin([t1r0]) must beEmpty()
+            deleteMinBy([t1r0], coerceCriteria) must beEmpty()
         },
         "It should return queue without the smallest node when it's rank 0" in do {
-            deleteMin([t2r0, t1r1]) must equalTo([t1r1])
+            deleteMinBy([t2r0, t1r1], coerceCriteria) must equalTo([t1r1])
         },
         "It should return queue without the minimum when it's not the lowest rank root" in do {
-            deleteMin([t1r0, t1r1, t1r2]) must equalTo([{
+            deleteMinBy([t1r0, t1r1, t1r2], coerceCriteria) must equalTo([{
                 data: t1r0.data,
                 rank: 1,
                 children: [

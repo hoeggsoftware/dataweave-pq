@@ -20,8 +20,25 @@ import * from dw::ext::pq::Types
 import * from pq::internal::queue
 import * from pq::internal::tree
 
-type PriorityQueue = BinomialQueue
-var emptyQueue: PriorityQueue = []
+type PriorityQueue<T> = {
+  queue: BinomialQueue,
+  criteria: Criteria<T>
+}
 
-fun insert(q: PriorityQueue, data: Any): PriorityQueue = 
-  insBy(newTree(data), q, coerceCriteria)
+fun init<T>(criteria: Criteria<T>): PriorityQueue<T> = {
+  queue: [],
+  criteria: criteria
+}
+
+fun insert<T>(q: PriorityQueue, data: T): PriorityQueue<T> = {
+  queue: insBy(newTree(data), q.queue, q.criteria),
+  criteria: q.criteria
+}
+
+fun next<T>(q: PriorityQueue<T>): T | Null =
+  q.queue findMinBy q.criteria
+
+fun deleteNext(q: PriorityQueue): PriorityQueue = {
+  queue: deleteMinBy(q.queue, q.criteria),
+  criteria: q.criteria
+}

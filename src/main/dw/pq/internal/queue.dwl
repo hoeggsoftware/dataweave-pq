@@ -19,7 +19,9 @@ import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 import * from pq::internal::tree
 
-type Criteria = (data: Any) -> Comparable
+type Criteria<T> = (data: T) -> Comparable
+
+@Internal(permits = ["pq::"])
 fun coerceCriteria(data: Any) = data as Comparable
 
 @Internal(permits = ["pq::"])
@@ -34,23 +36,23 @@ fun insBy(t: BinomialTree, q: BinomialQueue, criteria: Criteria): BinomialQueue 
   else if (t.rank < q[0].rank) t >> q
   else insBy(linkBy(t, q[0], criteria), q drop 1, criteria)
 
-fun meld(q1: BinomialQueue, q2: BinomialQueue): BinomialQueue =
+fun meldBy(q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria): BinomialQueue =
   if (isEmpty(q1)) q2
   else if (isEmpty(q2)) q1
   else if (q1[0].rank == q2[0].rank)
-    insBy(link(q1[0], q2[0]), meld(q1 drop 1, q2 drop 1), coerceCriteria)
+    insBy(linkBy(q1[0], q2[0], criteria), meldBy(q1 drop 1, q2 drop 1, criteria), coerceCriteria)
   else if (q1[0].rank < q2[0].rank)
-    q1[0] >> meld(q1 drop 1, q2)
-  else meld(q2, q1)
+    q1[0] >> meldBy(q1 drop 1, q2, criteria)
+  else meldBy(q2, q1, criteria)
 
-fun findMin(q: BinomialQueue) =
+fun findMinBy<T>(q: BinomialQueue, criteria: Criteria): T | Null =
   if (isEmpty(q)) null
-  else(q minBy (t) -> t.data).data
+  else(q minBy (t) -> criteria(t.data)).data as T
 
-fun deleteMin(q: BinomialQueue): BinomialQueue = do {
-  var sorted = q orderBy (t) -> (t.data)
+fun deleteMinBy(q: BinomialQueue, criteria: Criteria): BinomialQueue = do {
+  var sorted = q orderBy (t) -> (criteria(t.data))
   var minTree = sorted[0]
   var remaining = sorted drop 1
   ---
-  meld(minTree.children[-1 to 0] default [], remaining)
+  meldBy(minTree.children[-1 to 0] default [], remaining, criteria)
 }
