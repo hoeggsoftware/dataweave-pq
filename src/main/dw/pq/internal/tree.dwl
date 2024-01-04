@@ -35,6 +35,7 @@ fun isValidBinomialTree(tree: BinomialTree, rank: Number = -1): Boolean = do {
     )
 }
 
+@Internal(permits=["pq::"])
 fun link(t1:BinomialTree, t2: BinomialTree): BinomialTree =
     if (t1.data > t2.data) link(t2, t1)
     else {

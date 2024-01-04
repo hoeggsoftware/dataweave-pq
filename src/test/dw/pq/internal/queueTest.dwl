@@ -179,4 +179,15 @@ var t1r2 = {
             }])
         }
     ],
+    "findMin" describedBy [
+        "It should return null for an empty queue" in do {
+            findMin([]) must beNull()
+        },
+        "it should return the value of the only member" in do {
+            findMin([t1r0]) must equalTo(t1r0.data)
+        },
+        "It should give the smallest value of a root" in do {
+            findMin([t1r0, t1r1, t1r2]) must equalTo(t1r1.data)
+        }
+    ],
 ]

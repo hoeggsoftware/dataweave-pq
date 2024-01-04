@@ -24,6 +24,7 @@ fun isValidBinomialQueueRoot(t: BinomialTree, index: Number) = isValidBinomialTr
 fun isValidBinomialQueue(q: BinomialQueue): Boolean = 
   (q map (t, index) -> isValidBinomialQueueRoot(t, index)) every $
 
+@Internal(permits = ["pq::"])
 fun ins(t: BinomialTree, q: BinomialQueue): BinomialQueue =
   if(isEmpty(q)) [t]
   else if (t.rank < q[0].rank) t >> q
@@ -37,3 +38,7 @@ fun meld(q1: BinomialQueue, q2: BinomialQueue): BinomialQueue =
   else if (q1[0].rank < q2[0].rank)
     q1[0] >> meld(q1 drop 1, q2)
   else meld(q2, q1)
+
+fun findMin(q: BinomialQueue) =
+  if (isEmpty(q)) null
+  else min(q map $.data)
