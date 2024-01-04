@@ -19,7 +19,7 @@
 import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 
-fun newRoot(value): BinomialTree = {
+fun newTree(value): BinomialTree = {
     data: value,
     rank: 0,
     children: []
@@ -34,3 +34,11 @@ fun isValidBinomialTree(tree: BinomialTree, rank: Number = -1): Boolean = do {
             every $
     )
 }
+
+fun link(t1:BinomialTree, t2: BinomialTree): BinomialTree =
+    if (t1.data > t2.data) link(t2, t1)
+    else {
+        data: t1.data,
+        rank: t1.rank + 1,
+        children: t2 >> t1.children
+    }

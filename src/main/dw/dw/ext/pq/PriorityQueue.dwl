@@ -20,9 +20,5 @@ import * from dw::ext::pq::Types
 import * from pq::internal::tree
 
 var emptyQueue: BinomialQueue = []
-
-fun isEmptyQ(q: BinomialQueue): Boolean =
-    isEmpty(q)
-
-fun insertQ(q: BinomialQueue, value): BinomialQueue =
-    q << newRoot(value)
+---
+emptyQueue

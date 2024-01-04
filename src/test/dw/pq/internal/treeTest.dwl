@@ -109,4 +109,91 @@ import * from pq::internal::tree
             isValidBinomialTree(tree) must equalTo(true)
         }
     ],
+    do {
+        var t1R0 = {
+            data: 1,
+            rank: 0,
+            children: []
+        }
+        var t2R0 = {
+            data: 3,
+            rank: 0,
+            children: []
+        }
+        var t1R1 = {
+            data: 0,
+            rank: 1,
+            children: [
+                {
+                    data: 4,
+                    rank: 0,
+                    children: []
+                }
+            ]
+        }
+        var t2R1 = {
+            data: 2,
+            rank: 1,
+            children: [
+                {
+                    data: 100,
+                    rank: 0,
+                    children: []
+                }
+            ]
+        }
+        ---
+        "link" describedBy [
+            "It should link rank 0 trees when smaller is first" in do {
+                link(t1R0, t2R0) must equalTo({
+                    data: 1,
+                    rank: 1,
+                    children: [
+                        {
+                            data: 3,
+                            rank: 0,
+                            children: []
+                        }
+                    ]
+                })
+            },
+            "It should link rank 0 trees when larger is first" in do {
+                link(t2R0, t1R0) must equalTo({
+                    data: 1,
+                    rank: 1,
+                    children: [
+                        {
+                            data: 3,
+                            rank: 0,
+                            children: []
+                        }
+                    ]
+                })            
+            },
+            "It should link rank 1 trees when smaller is first" in do {
+                link(t1R1, t2R1) must equalTo({
+                    data: 0,
+                    rank: 2,
+                    children: [
+                        {
+                            data: 2,
+                            rank: 1,
+                            children: [
+                                {
+                                    data: 100,
+                                    rank: 0,
+                                    children: []
+                                }
+                            ]
+                        },
+                        {
+                            data: 4,
+                            rank: 0,
+                            children: []
+                        }
+                    ]
+                })
+            }
+        ]
+    },
 ]
