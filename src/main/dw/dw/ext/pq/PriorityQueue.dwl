@@ -19,15 +19,10 @@
 import * from dw::ext::pq::Types
 import * from pq::internal::tree
 
-var emptyQueue = {
-    roots: []
-}
-
+var emptyQueue: BinomialQueue = []
 
 fun isEmptyQ(q: BinomialQueue): Boolean =
-    isEmpty(log(q).roots)
+    isEmpty(q)
 
 fun insertQ(q: BinomialQueue, value): BinomialQueue =
-    {
-        roots: q.roots << newRoot(value)
-    }
+    q << newRoot(value)

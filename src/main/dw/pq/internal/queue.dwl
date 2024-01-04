@@ -15,6 +15,8 @@
  */
 %dw 2.0
 
+import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 
-fun isValidBinomialQueue(q: BinomialQueue): Boolean = false
+fun isValidBinomialQueue(q: BinomialQueue): Boolean = 
+  q every (t) -> false

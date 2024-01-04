@@ -20,6 +20,4 @@
     children: Array<BinomialTree>
 } 
 
-type BinomialQueue = {
-    roots: Array<BinomialTree | Null>
-}
+type BinomialQueue = Array<BinomialTree | Null>
