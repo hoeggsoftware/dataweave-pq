@@ -27,6 +27,7 @@ fun coerceCriteria(data: Any) = data as Comparable
 @Internal(permits = ["pq::"])
 fun isValidBinomialQueueRoot(t: BinomialTree, index: Number) = isValidBinomialTree(t, index)
 
+@Internal(permits = ["pq::"])
 fun isValidBinomialQueue(q: BinomialQueue): Boolean = 
   (q map (t, index) -> isValidBinomialQueueRoot(t, index)) every $
 
@@ -36,6 +37,7 @@ fun insBy(t: BinomialTree, q: BinomialQueue, criteria: Criteria): BinomialQueue 
   else if (t.rank < q[0].rank) t >> q
   else insBy(linkBy(t, q[0], criteria), q drop 1, criteria)
 
+@Internal(permits = ["pq::", "dw::ext::pq"])
 fun meldBy(q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria): BinomialQueue =
   if (isEmpty(q1)) q2
   else if (isEmpty(q2)) q1
@@ -45,10 +47,12 @@ fun meldBy(q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria): BinomialQu
     q1[0] >> meldBy(q1 drop 1, q2, criteria)
   else meldBy(q2, q1, criteria)
 
+@Internal(permits = ["pq::", "dw::ext::pq"])
 fun findMinBy<T>(q: BinomialQueue, criteria: Criteria): T | Null =
   if (isEmpty(q)) null
   else(q minBy (t) -> criteria(t.data)).data as T
 
+@Internal(permits = ["pq::", "dw::ext::pq"])
 fun deleteMinBy(q: BinomialQueue, criteria: Criteria): BinomialQueue = do {
   var sorted = q orderBy (t) -> (criteria(t.data))
   var minTree = sorted[0]
