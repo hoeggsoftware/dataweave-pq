@@ -106,15 +106,15 @@ var t1r2 = {
         ]
     },
     /** ins expects the tree rank to be <= the lowest tree rank in the queue */
-    "ins" describedBy [
+    "insBy" describedBy [
         "It should insert a rank 0 tree into an empty queue" in do {
-            ins(t1r0, []) must equalTo([t1r0])
+            insBy(t1r0, [], coerceCriteria) must equalTo([t1r0])
         },
         "It should insert a rank 0 tree into a queue with one rank 1 tree" in do {
-            ins(t1r0, [t1r1]) must equalTo([t1r0, t1r1])
+            insBy(t1r0, [t1r1], coerceCriteria) must equalTo([t1r0, t1r1])
         },
         "It should insert a rank 1 tree into a queue with one rank 1 tree" in do {
-            ins(t1r1, [t2r1]) must equalTo([{
+            insBy(t1r1, [t2r1], coerceCriteria) must equalTo([{
                 data: 250,
                 rank: 2,
                 children: [
@@ -128,7 +128,7 @@ var t1r2 = {
             }])
         },
         "It should insert a rank 0 tree into a longer queue with a rank 0 tree" in do {
-            ins(t1r0, [t2r0, t1r1]) must equalTo([{
+            insBy(t1r0, [t2r0, t1r1], coerceCriteria) must equalTo([{
                 data: t2r0.data,
                 rank: 2,
                 children: [
@@ -138,7 +138,7 @@ var t1r2 = {
             }])
         },
         "It should insert a rank 0 tree into queue with a rank 0 and a rank 2 tree" in do {
-            ins(t1r0, [t2r0, t1r2]) must equalTo([{
+            insBy(t1r0, [t2r0, t1r2], coerceCriteria) must equalTo([{
                 data: t2r0.data,
                 rank: 1,
                 children: [

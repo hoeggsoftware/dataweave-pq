@@ -37,10 +37,10 @@ fun isValidBinomialTree(tree: BinomialTree, rank: Number = -1): Boolean = do {
 
 @Internal(permits=["pq::"])
 fun link(t1: BinomialTree, t2: BinomialTree): BinomialTree =
-    linkBy(t1, t2, (item) -> item as Comparable)
+    linkBy(t1, t2, (data) -> data as Comparable)
 
 @Internal(permits=["pq::"])
-fun linkBy<T>(t1:BinomialTree, t2: BinomialTree, criteria: (value: T) -> Comparable): BinomialTree = do {
+fun linkBy<T>(t1:BinomialTree, t2: BinomialTree, criteria: (data: T) -> Comparable): BinomialTree = do {
     if (criteria(t1.data) > criteria(t2.data)) linkBy(t2, t1, criteria)
     else {
         data: t1.data,

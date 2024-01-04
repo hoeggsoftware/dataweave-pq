@@ -24,4 +24,4 @@ type PriorityQueue = BinomialQueue
 var emptyQueue: PriorityQueue = []
 
 fun insert(q: PriorityQueue, data: Any): PriorityQueue = 
-  ins(newTree(data), q)
+  insBy(newTree(data), q, coerceCriteria)

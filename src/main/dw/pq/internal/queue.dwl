@@ -19,6 +19,9 @@ import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 import * from pq::internal::tree
 
+type Criteria = (data: Any) -> Comparable
+fun coerceCriteria(data: Any) = data as Comparable
+
 @Internal(permits = ["pq::"])
 fun isValidBinomialQueueRoot(t: BinomialTree, index: Number) = isValidBinomialTree(t, index)
 
@@ -26,16 +29,16 @@ fun isValidBinomialQueue(q: BinomialQueue): Boolean =
   (q map (t, index) -> isValidBinomialQueueRoot(t, index)) every $
 
 @Internal(permits = ["pq::", "dw::ext::pq"])
-fun ins(t: BinomialTree, q: BinomialQueue): BinomialQueue =
+fun insBy(t: BinomialTree, q: BinomialQueue, criteria: Criteria): BinomialQueue =
   if(isEmpty(q)) [t]
   else if (t.rank < q[0].rank) t >> q
-  else ins(link(t, q[0]), q drop 1)
+  else insBy(linkBy(t, q[0], criteria), q drop 1, criteria)
 
 fun meld(q1: BinomialQueue, q2: BinomialQueue): BinomialQueue =
   if (isEmpty(q1)) q2
   else if (isEmpty(q2)) q1
   else if (q1[0].rank == q2[0].rank)
-    ins(link(q1[0], q2[0]), meld(q1 drop 1, q2 drop 1))
+    insBy(link(q1[0], q2[0]), meld(q1 drop 1, q2 drop 1), coerceCriteria)
   else if (q1[0].rank < q2[0].rank)
     q1[0] >> meld(q1 drop 1, q2)
   else meld(q2, q1)
