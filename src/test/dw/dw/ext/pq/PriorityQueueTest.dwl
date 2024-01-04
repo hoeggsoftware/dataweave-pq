@@ -22,4 +22,30 @@ import * from dw::ext::pq::PriorityQueue
 ---
 "PriorityQueue" describedBy [
 
+    "init" describedBy [
+        "It should accept a criteria for ordering" in do {
+          var values = ["MONDAY", "Tuesday", "wednesday", "thursday", "fRiDaY", "SATURDAY", "Sunday"]
+            map (value, index) -> { name: value, inserted: index }          var pq = init((data) -> lower(data.name))
+          var afterInserts = values reduce (value, pq = pq) ->
+            pq insert value
+          var firstItem = next(afterInserts)
+          var firstDropped = deleteNext(afterInserts)
+          var secondItem = next(firstDropped)
+          var firstTwo = {
+            first: firstItem,
+            second: secondItem
+          }
+          ---
+          firstTwo must equalTo({
+            first: {
+              name: "fRiDaY",
+              inserted: 4
+            },
+            second: {
+              name: "MONDAY",
+              inserted: 0
+            }
+          })
+        },
+    ],
 ]

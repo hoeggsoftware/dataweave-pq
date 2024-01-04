@@ -19,8 +19,6 @@ import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 import * from pq::internal::tree
 
-type Criteria<T> = (data: T) -> Comparable
-
 @Internal(permits = ["pq::"])
 fun coerceCriteria(data: Any) = data as Comparable
 

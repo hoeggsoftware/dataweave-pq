@@ -38,7 +38,7 @@ fun insert<T>(q: PriorityQueue, data: T): PriorityQueue<T> = {
 fun next<T>(q: PriorityQueue<T>): T | Null =
   q.queue findMinBy q.criteria
 
-fun deleteNext(q: PriorityQueue): PriorityQueue = {
+fun deleteNext<T>(q: PriorityQueue<T>): PriorityQueue<T> = {
   queue: deleteMinBy(q.queue, q.criteria),
   criteria: q.criteria
 }

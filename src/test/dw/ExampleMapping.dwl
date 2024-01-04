@@ -18,6 +18,11 @@
 output application/json
 
 import * from dw::ext::pq::PriorityQueue
-var queue = emptyQueue
+
+var values = ["MONDAY", "Tuesday", "wednesday", "tHuRsDaY", "friday", "SATURDAY", "Sunday"]
+  map (value, index) -> { name: value, inserted: index }
+var pq = init((data) -> lower(data.name))
+var afterInserts = values reduce (value, pq = pq) ->
+  pq insert value
 ---
-insert(queue, 4)
+next(afterInserts)

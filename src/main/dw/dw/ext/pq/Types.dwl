@@ -21,3 +21,5 @@
 } 
 
 type BinomialQueue = Array<BinomialTree>
+
+type Criteria<T> = (data: T) -> Comparable
