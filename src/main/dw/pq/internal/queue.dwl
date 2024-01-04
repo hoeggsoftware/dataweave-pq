@@ -13,5 +13,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- 
- %dw 2.0
+%dw 2.0
+
+import * from dw::ext::pq::Types
+
+fun isValidBinomialQueue(q: BinomialQueue): Boolean = false

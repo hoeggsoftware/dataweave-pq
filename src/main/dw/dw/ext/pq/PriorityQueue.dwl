@@ -16,7 +16,7 @@
  
  %dw 2.0
 
-import * from dw::ext::Types
+import * from dw::ext::pq::Types
 import * from pq::internal::tree
 
 var emptyQueue = {
