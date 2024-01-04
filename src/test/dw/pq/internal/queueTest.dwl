@@ -3,6 +3,61 @@ import * from dw::test::Tests
 import * from dw::test::Asserts
 
 import * from pq::internal::queue
+
+var t1r0 = {
+    data: 1000,
+    rank: 0,
+    children: []
+}
+var t2r0 = {
+    data: 200,
+    rank: 0,
+    children: []
+}
+var t1r1 = {
+    data: 500,
+    rank: 1,
+    children: [
+        {
+            data: 4000,
+            rank: 0,
+            children: []
+        }
+    ]
+}
+var t2r1 = {
+    data: 250,
+    rank: 1,
+    children: [
+        {
+            data: 777,
+            rank: 0,
+            children: []
+        }
+    ]
+}
+var t1r2 = {
+    data: 1500,
+    rank: 2,
+    children: [
+        {
+            data: 2500,
+            rank: 1,
+            children: [
+                {
+                    data: 3500,
+                    rank: 0,
+                    children: []
+                }
+            ]
+        },
+        {
+            data: 3000,
+            rank: 0,
+            children: []
+        }
+    ]
+}
 ---
 "queue" describedBy [
     do {
@@ -50,107 +105,78 @@ import * from pq::internal::queue
             }
         ]
     },
-    do {
-        var t1r0 = {
-            data: 1000,
-            rank: 0,
-            children: []
+    /** ins expects the tree rank to be <= the lowest tree rank in the queue */
+    "ins" describedBy [
+        "It should insert a rank 0 tree into an empty queue" in do {
+            ins(t1r0, []) must equalTo([t1r0])
+        },
+        "It should insert a rank 0 tree into a queue with one rank 1 tree" in do {
+            ins(t1r0, [t1r1]) must equalTo([t1r0, t1r1])
+        },
+        "It should insert a rank 1 tree into a queue with one rank 1 tree" in do {
+            ins(t1r1, [t2r1]) must equalTo([{
+                data: 250,
+                rank: 2,
+                children: [
+                    t1r1,
+                    {
+                        data: 777,
+                        rank: 0,
+                        children: []
+                    }
+                ]
+            }])
+        },
+        "It should insert a rank 0 tree into a longer queue with a rank 0 tree" in do {
+            ins(t1r0, [t2r0, t1r1]) must equalTo([{
+                data: t2r0.data,
+                rank: 2,
+                children: [
+                    t1r1,
+                    t1r0
+                ]
+            }])
+        },
+        "It should insert a rank 0 tree into queue with a rank 0 and a rank 2 tree" in do {
+            ins(t1r0, [t2r0, t1r2]) must equalTo([{
+                data: t2r0.data,
+                rank: 1,
+                children: [
+                    {
+                        data: t1r0.data,
+                        rank: 0,
+                        children: []
+                    }
+                ]
+            }, t1r2])
         }
-        var t2r0 = {
-            data: 200,
-            rank: 0,
-            children: []
+    ],
+    "meld" describedBy [
+        "It should meld two empty queues into one empty queue" in do {
+            meld([], []) must equalTo([])
+        },
+        "It should meld a queue with an empty queue" in do {
+            meld([t1r0, t1r1], []) must equalTo([t1r0, t1r1])
+        },
+        "It should meld an empty queue with a queue" in do {
+            meld([], [t2r0, t1r1]) must equalTo([t2r0, t1r1])
+        },
+        "It should prepend a single lower rank tree to a queue with only higher ranks" in do {
+            meld([t1r0], [t1r1, t1r2]) must equalTo([t1r0, t1r1, t1r2])
+        },
+        "It should produce a valid queue with trees sorted by ranks from each of the inputs" in do {
+            meld([t1r0, t1r2], [t1r1]) must equalTo([t1r0, t1r1, t1r2])
+        },
+        "It should produce a valid queue when each input has the same lowest rank" in do {
+            meld([t1r0, t1r2], [t2r0, t1r1]) must equalTo([{
+                data: 200,
+                rank: 3,
+                children: [
+                    t1r2,
+                    t1r1,
+                    t1r0
+                ]
+            }])
         }
-        var t1r1 = {
-            data: 500,
-            rank: 1,
-            children: [
-                {
-                    data: 4000,
-                    rank: 0,
-                    children: []
-                }
-            ]
-        }
-        var t2r1 = {
-            data: 250,
-            rank: 1,
-            children: [
-                {
-                    data: 777,
-                    rank: 0,
-                    children: []
-                }
-            ]
-        }
-        var t1r2 = {
-            data: 1500,
-            rank: 2,
-            children: [
-                {
-                    data: 2500,
-                    rank: 1,
-                    children: [
-                        {
-                            data: 3500,
-                            rank: 0,
-                            children: []
-                        }
-                    ]
-                },
-                {
-                    data: 3000,
-                    rank: 0,
-                    children: []
-                }
-            ]
-        }
-        ---
-        /** ins expects the tree rank to be <= the lowest tree rank in the queue */
-        "ins" describedBy [
-            "It should insert a rank 0 tree into an empty queue" in do {
-                ins(t1r0, []) must equalTo([t1r0])
-            },
-            "It should insert a rank 0 tree into a queue with one rank 1 tree" in do {
-                ins(t1r0, [t1r1]) must equalTo([t1r0, t1r1])
-            },
-            "It should insert a rank 1 tree into a queue with one rank 1 tree" in do {
-                ins(t1r1, [t2r1]) must equalTo([{
-                    data: 250,
-                    rank: 2,
-                    children: [
-                        t1r1,
-                        {
-                            data: 777,
-                            rank: 0,
-                            children: []
-                        }
-                    ]
-                }])
-            },
-            "It should insert a rank 0 tree into a longer queue with a rank 0 tree" in do {
-                ins(t1r0, [t2r0, t1r1]) must equalTo([{
-                    data: t2r0.data,
-                    rank: 2,
-                    children: [
-                        t1r1,
-                        t1r0
-                    ]
-                }])
-            },
-            "It should insert a rank 0 tree into queue with a rank 0 and a rank 2 tree" in do {
-                ins(t1r0, [t2r0, t1r2]) must equalTo([{
-                    data: t2r0.data,
-                    rank: 1,
-                    children: [
-                        {
-                            data: t1r0.data,
-                            rank: 0,
-                            children: []
-                        }
-                    ]
-                }, t1r2])
-            }
-        ]
-    },
+    ],
 ]
