@@ -1,5 +1,3 @@
-%dw 2.0
-
 /*
    Copyright 2024 Ryan Hoegg
 
@@ -15,6 +13,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+ 
+ %dw 2.0
 
 import * from dw::ext::Types
 import * from pq::internal::tree
