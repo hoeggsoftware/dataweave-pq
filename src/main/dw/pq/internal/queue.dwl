@@ -19,6 +19,7 @@ import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 import * from pq::internal::tree
 
+@Internal(permits = ["pq::"])
 fun isValidBinomialQueueRoot(t: BinomialTree, index: Number) = isValidBinomialTree(t, index)
 
 fun isValidBinomialQueue(q: BinomialQueue): Boolean = 
@@ -42,3 +43,11 @@ fun meld(q1: BinomialQueue, q2: BinomialQueue): BinomialQueue =
 fun findMin(q: BinomialQueue) =
   if (isEmpty(q)) null
   else min(q map $.data)
+
+fun deleteMin(q: BinomialQueue): BinomialQueue = do {
+  var sorted = q orderBy $.data
+  var minTree = sorted[0]
+  var remaining = sorted drop 1
+  ---
+  meld(minTree.children[-1 to 0] default [], remaining)
+}

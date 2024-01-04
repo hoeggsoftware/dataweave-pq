@@ -153,7 +153,7 @@ var t1r2 = {
     ],
     "meld" describedBy [
         "It should meld two empty queues into one empty queue" in do {
-            meld([], []) must equalTo([])
+            meld([], []) must beEmpty()
         },
         "It should meld a queue with an empty queue" in do {
             meld([t1r0, t1r1], []) must equalTo([t1r0, t1r1])
@@ -188,6 +188,30 @@ var t1r2 = {
         },
         "It should give the smallest value of a root" in do {
             findMin([t1r0, t1r1, t1r2]) must equalTo(t1r1.data)
+        }
+    ],
+    "deleteMin" describedBy [
+        "It should do nothing for an empty queue" in do {
+            deleteMin([]) must beEmpty()
+        },
+        "It should produce empty queue for a single node" in do {
+            deleteMin([t1r0]) must beEmpty()
+        },
+        "It should return queue without the smallest node when it's rank 0" in do {
+            deleteMin([t2r0, t1r1]) must equalTo([t1r1])
+        },
+        "It should return queue without the minimum when it's not the lowest rank root" in do {
+            deleteMin([t1r0, t1r1, t1r2]) must equalTo([{
+                data: t1r0.data,
+                rank: 1,
+                children: [
+                    {
+                        data: 4000,
+                        rank: 0,
+                        children: []
+                    }
+                ]
+            },t1r2])
         }
     ],
 ]
