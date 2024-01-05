@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>software.hoegg</groupId>
     <artifactId>dw-ext-pq</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>dw-library</packaging>
     <name>dw-ext-pq</name>
 
@@ -62,7 +62,7 @@
         <connection>scm:git:git@github.com:hoeggsoftware/dw-ext-pq.git</connection>
         <developerConnection>scm:git:git@github.com:hoeggsoftware/dw-ext-pq.git</developerConnection>
         <url>https://github.com/hoeggsoftware/dw-ext-pq</url>
-      <tag>0.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <distributionManagement>
