@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>software.hoegg</groupId>
     <artifactId>dw-ext-pq</artifactId>
-    <version>0.0.0-SNAPSHOT</version>
+    <version>0.0.0</version>
     <packaging>dw-library</packaging>
     <name>dw-ext-pq</name>
 
@@ -64,7 +62,8 @@
         <connection>scm:git:git@github.com:hoeggsoftware/dw-ext-pq.git</connection>
         <developerConnection>scm:git:git@github.com:hoeggsoftware/dw-ext-pq.git</developerConnection>
         <url>https://github.com/hoeggsoftware/dw-ext-pq</url>
-    </scm>
+      <tag>0.0.0</tag>
+  </scm>
 
     <distributionManagement>
         <snapshotRepository>
