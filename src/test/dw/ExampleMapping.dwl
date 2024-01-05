@@ -24,5 +24,7 @@ var values = ["MONDAY", "Tuesday", "wednesday", "tHuRsDaY", "friday", "SATURDAY"
 var pq = init((data) -> lower(data.name))
 var afterInserts = values reduce (value, pq = pq) ->
   pq insert value
+
+var oneMoreInsert = afterInserts insert { name: "Someday", inserted: 1000000 }
 ---
 next(afterInserts)

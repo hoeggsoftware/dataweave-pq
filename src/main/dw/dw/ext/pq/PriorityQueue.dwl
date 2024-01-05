@@ -30,7 +30,7 @@ fun init<T>(criteria: Criteria<T>): PriorityQueue<T> = {
   criteria: criteria
 }
 
-fun insert<T>(q: PriorityQueue, data: T): PriorityQueue<T> = {
+fun insert<T>(q: PriorityQueue<T>, data: T): PriorityQueue<T> = {
   queue: insBy(newTree(data), q.queue, q.criteria),
   criteria: q.criteria
 }
