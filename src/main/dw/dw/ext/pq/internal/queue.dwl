@@ -20,9 +20,6 @@ import * from dw::ext::pq::Types
 import * from dw::ext::pq::internal::tree
 
 @Internal(permits = ["dw::ext::pq::internal"])
-fun coerceCriteria(data: Any) = data as Comparable
-
-@Internal(permits = ["dw::ext::pq::internal"])
 fun isValidBinomialQueueRoot(t: BinomialTree, index: Number) = isValidBinomialTree(t, index)
 
 @Internal(permits = ["dw::ext::pq::internal"])
@@ -36,14 +33,26 @@ fun insBy(t: BinomialTree, q: BinomialQueue, criteria: Criteria): BinomialQueue 
   else insBy(linkBy(t, q[0], criteria), q drop 1, criteria)
 
 @Internal(permits = ["dw::ext::pq::internal", "dw::ext::pq"])
-fun meldBy(q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria): BinomialQueue =
-  if (isEmpty(q1)) q2
-  else if (isEmpty(q2)) q1
-  else if (q1[0].rank == q2[0].rank)
-    insBy(linkBy(q1[0], q2[0], criteria), meldBy(q1 drop 1, q2 drop 1, criteria), criteria)
-  else if (q1[0].rank < q2[0].rank)
-    q1[0] >> meldBy(q1 drop 1, q2, criteria)
-  else meldBy(q2, q1, criteria)
+fun meldBy(q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria, transform: (q: BinomialQueue) -> BinomialQueue = (q) -> q): BinomialQueue = do {
+  var tq1 = transform(q1)
+  var tq2 = transform(q2)
+  ---
+  if (isEmpty(tq1)) tq2
+  else if (isEmpty(tq2)) tq1
+  else if (tq1[0].rank == tq2[0].rank)
+    insBy(linkBy(tq1[0], tq2[0], criteria), meldBy(tq1 drop 1, tq2 drop 1, criteria, transform), criteria)
+  else if (tq1[0].rank < tq2[0].rank)
+    tq1[0] >> meldBy(tq1 drop 1, tq2, criteria, transform)
+  else meldBy(tq2, tq1, criteria)
+}
+
+@Internal(permits = ["dw::ext::pq::internal", "dw::ext::pq"])
+fun skewMeldBy(q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria): BinomialQueue = do {
+  fun eliminateLeadingDuplicate(q: BinomialQueue): BinomialQueue =
+    if (isEmpty(q)) q else insBy(q[0], q drop 1, criteria)
+  ---
+  meldBy(q1, q2, criteria, eliminateLeadingDuplicate)
+}
 
 @Internal(permits = ["dw::ext::pq::internal", "dw::ext::pq"])
 fun findMinBy<T>(q: BinomialQueue, criteria: Criteria): T | Null =

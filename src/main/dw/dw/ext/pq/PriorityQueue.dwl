@@ -17,8 +17,8 @@
  %dw 2.0
 
 import * from dw::ext::pq::Types
-import * from pq::internal::queue
-import * from pq::internal::tree
+import * from dw::ext::pq::internal::queue
+import * from dw::ext::pq::internal::tree
 
 type PriorityQueue<T> = {
   queue: BinomialQueue,

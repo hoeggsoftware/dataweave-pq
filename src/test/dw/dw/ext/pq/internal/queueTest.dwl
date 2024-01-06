@@ -2,18 +2,14 @@
 import * from dw::test::Tests
 import * from dw::test::Asserts
 
+import * from dw::ext::pq::internal::tree
 import * from dw::ext::pq::internal::queue
 
-var t1r0 = {
-    data: 1000,
-    rank: 0,
-    children: []
-}
-var t2r0 = {
-    data: 200,
-    rank: 0,
-    children: []
-}
+fun coerceCriteria(data: Any) = data as Comparable
+
+var t1r0 = newTree(1000)
+var t2r0 = newTree(200)
+
 var t1r1 = {
     data: 500,
     rank: 1,
@@ -31,6 +27,17 @@ var t2r1 = {
     children: [
         {
             data: 777,
+            rank: 0,
+            children: []
+        }
+    ]
+}
+var t3r1 = {
+    data: 1,
+    rank: 1,
+    children: [
+        {
+            data: 10,
             rank: 0,
             children: []
         }
@@ -56,6 +63,18 @@ var t1r2 = {
             rank: 0,
             children: []
         }
+    ]
+}
+var t2r2 = {
+    data: 808,
+    rank: 2,
+    children: [
+        {
+            data: 909,
+            rank: 1,
+            children: [ newTree(1010) ]
+        },
+        newTree(2020)
     ]
 }
 ---
@@ -177,6 +196,38 @@ var t1r2 = {
                     t1r0
                 ]
             }])
+        },
+    ],
+    "skewMeldBy" describedBy [
+        "It should produce a valid skew binomial queue when one has two of the same rank" in do {
+            skewMeldBy([newTree(0), t1r0, t1r1], [t2r0, t2r1], coerceCriteria) must equalTo([
+                t2r0,
+                t2r1,
+                {
+                    data: 0,
+                    rank: 2,
+                    children: [
+                        t1r1,
+                        t1r0
+                    ]
+                }
+            ])
+        },
+        "it should produce a valid skew binomial queue when both have two of the same rank" in do {
+            log(skewMeldBy([newTree(0), t1r1, t1r2], [t2r1, t3r1, t2r2], coerceCriteria)) must equalTo([
+                newTree(0),
+                t1r1,
+                t1r2,
+                {
+                    data: 1, // t3r1
+                    rank: 3,
+                    children: [
+                        t2r2,
+                        t2r1,
+                        newTree(10) // t3r1 original child
+                    ]
+                }
+            ])
         }
     ],
     "findMinBy" describedBy [
