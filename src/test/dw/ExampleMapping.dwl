@@ -27,4 +27,7 @@ var afterInserts = values reduce (value, pq = pq) ->
 
 var oneMoreInsert = afterInserts insert { name: "Someday", inserted: 1000000 }
 ---
-next(afterInserts)
+{
+  next: next(afterInserts),
+  nextNext: next(deleteNext(afterInserts))
+}

@@ -40,7 +40,7 @@ fun meldBy(q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria): BinomialQu
   if (isEmpty(q1)) q2
   else if (isEmpty(q2)) q1
   else if (q1[0].rank == q2[0].rank)
-    insBy(linkBy(q1[0], q2[0], criteria), meldBy(q1 drop 1, q2 drop 1, criteria), coerceCriteria)
+    insBy(linkBy(q1[0], q2[0], criteria), meldBy(q1 drop 1, q2 drop 1, criteria), criteria)
   else if (q1[0].rank < q2[0].rank)
     q1[0] >> meldBy(q1 drop 1, q2, criteria)
   else meldBy(q2, q1, criteria)
