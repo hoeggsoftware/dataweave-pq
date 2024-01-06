@@ -32,6 +32,17 @@ fun insBy(t: BinomialTree, q: BinomialQueue, criteria: Criteria): BinomialQueue 
   else if (t.rank < q[0].rank) t >> q
   else insBy(linkBy(t, q[0], criteria), q drop 1, criteria)
 
+fun skewInsertBy<T>(data: T, q: BinomialQueue, criteria: Criteria): BinomialQueue = do {
+  var newRank0 = newTree(data)
+  ---
+  if ((sizeOf(q) < 2) or (q[0].rank < q[1].rank))
+    newRank0 >> q
+  else // ranks must be equal since lower ranks come before higher ranks
+    // now we skew link, this is O(1) while insBy is O(log n)
+    skewLinkBy(newRank0, q[0], q[1], criteria) >> q drop 2
+}
+    
+
 @Internal(permits = ["dw::ext::pq::internal", "dw::ext::pq"])
 fun meldBy(q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria, transform: (q: BinomialQueue) -> BinomialQueue = (q) -> q): BinomialQueue = do {
   var tq1 = transform(q1)
@@ -66,4 +77,18 @@ fun deleteMinBy(q: BinomialQueue, criteria: Criteria): BinomialQueue = do {
   var remaining = sorted drop 1
   ---
   meldBy(minTree.children[-1 to 0] default [], remaining, criteria)
+}
+
+@Internal(permits = ["dw::ext::pq::internal", "dw::ext::pq"])
+fun skewDeleteMinBy(q: BinomialQueue, criteria: Criteria): BinomialQueue = do {
+  var sorted = q orderBy (t) -> (criteria(t.data)) as BinomialQueue
+  var minTree = sorted[0]
+  var remaining = sorted drop 1
+  var orphans = minTree.children partition ((t) -> t.rank == 0)
+  var r0Orphans: BinomialQueue = (remaining.success default []) as BinomialQueue
+  var otherOrphans: BinomialQueue = (remaining.failure default []) as BinomialQueue
+  var meldedHighRankTrees = skewMeldBy(otherOrphans, remaining, criteria)
+  ---
+  r0Orphans reduce (t, newQ = meldedHighRankTrees) ->
+    skewInsertBy(t.data, newQ, criteria)
 }
