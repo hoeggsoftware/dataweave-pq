@@ -18,7 +18,12 @@
 import * from dw::test::Tests
 import * from dw::test::Asserts
 
+import * from dw::ext::pq::Types
 import * from dw::ext::pq::internal::tree
+
+@Internal(permits=["dw::ext::pq::internal"])
+fun link(t1: BinomialTree, t2: BinomialTree): BinomialTree =
+    linkBy(t1, t2, (data) -> data as Comparable)
 
 ---
 "tree" describedBy [
@@ -193,5 +198,56 @@ import * from dw::ext::pq::internal::tree
                 })
             },
         ]
-    }
+    },
+    do {
+    var lowercaseCriteria = (word) -> lower(word)
+        var t1R1 = {
+            data: "HORSERADISH",
+            rank: 1,
+            children: [
+                newTree("TURNIP")
+            ]
+        }
+        var t2R1 = {
+            data: "chive",
+            rank: 1,
+            children: [
+                newTree("dandelion")
+            ]
+        }
+    ---
+    "skewLinkBy" describedBy [
+        "It should create a Type A link when rank 0 is smallest" in do {
+            skewLinkBy(newTree("apple"), t1R1, t2R1, lowercaseCriteria) must equalTo({
+                data: "apple",
+                rank: 2,
+                children: [
+                    t2R1,
+                    t1R1
+                ]
+            })
+        },
+        "It should create a Type A link when the rank 0 is smallest and out of order" in do {
+            skewLinkBy(t2R1, newTree("apple"), t1R1, lowercaseCriteria) must equalTo({
+                data: "apple",
+                rank: 2,
+                children: [
+                    t2R1,
+                    t1R1
+                ]
+            })
+        },
+        "It should create a Type B link when the rank 0 is not smallest" in do {
+            skewLinkBy(newTree("zucchini"), t1R1, t2R1, lowercaseCriteria) must equalTo({
+                data: "chive",
+                rank: 2,
+                children: [
+                    newTree("zucchini"),
+                    t1R1,
+                    newTree("dandelion")
+                ]
+            })
+        }
+    ]
+    },
 ]
