@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>software.hoegg</groupId>
     <artifactId>dataweave-pq</artifactId>
-    <version>0.0.1<-SNAPSHOT/version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>dw-library</packaging>
     <name>Priority Queue Dataweave Library</name>
     <description>An efficient pure functional priority queue for use in [DataWeave 2.0](https://dataweave.mulesoft.com/)</description>
