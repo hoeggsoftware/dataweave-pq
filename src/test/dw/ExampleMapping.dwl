@@ -18,6 +18,7 @@
 output application/json
 
 import * from dw::ext::pq::PriorityQueue
+import * from dw::ext::pq::internal::tree
 
 var values = ["MONDAY", "Tuesday", "wednesday", "tHuRsDaY", "friday", "SATURDAY", "Sunday"]
   map (value, index) -> { name: value, inserted: index }
@@ -30,4 +31,5 @@ var oneMoreInsert = afterInserts insert { name: "Someday", inserted: 1000000 }
 {
   next: next(afterInserts),
   nextNext: next(deleteNext(afterInserts))
+
 }

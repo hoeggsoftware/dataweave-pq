@@ -39,7 +39,7 @@ fun skewInsertBy<T>(data: T, q: BinomialQueue, criteria: Criteria): BinomialQueu
     newRank0 >> q
   else // ranks must be equal since lower ranks come before higher ranks
     // now we skew link, this is O(1) while insBy is O(log n)
-    skewLinkBy(newRank0, q[0], q[1], criteria) >> q drop 2
+    skewLinkBy(newRank0, q[0], q[1], criteria) >> (q drop 2)
 }
     
 

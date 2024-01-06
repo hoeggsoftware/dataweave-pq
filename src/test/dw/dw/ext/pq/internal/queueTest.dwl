@@ -265,4 +265,23 @@ var t2r2 = {
             },t1r2])
         }
     ],
+    do {
+    var smallSkewQ = [newTree(0), newTree(1)]
+    ---
+    "skewInsertBy" describedBy [
+        "It should make two rank 0 trees after two skewInsertBys" in do {
+            var twoInsertQ = [1, 0] reduce (n, q = []) -> skewInsertBy(n, q, coerceCriteria)
+            ---
+            twoInsertQ must equalTo(smallSkewQ)
+        },
+        "It should skew link when inserting into queue with two rank 0 trees" in do {
+            skewInsertBy(2, smallSkewQ, coerceCriteria) must equalTo([
+                {
+                    data: 0,
+                    rank: 1,
+                    children: [newTree(1), newTree(2)] // this is not a valid binomial tree! but it is a skew binomial tree
+                }
+            ])
+        }
+    ]},
 ]
