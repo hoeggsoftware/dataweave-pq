@@ -8,6 +8,13 @@ import * from dw::ext::pq::internal::queue
 
 fun coerceCriteria(data: Any) = data as Comparable
 
+fun queueContents(q: BinomialQueue, prefix: Array = []): Array = do {
+    var next = findMinBy(q, coerceCriteria)
+    ---
+    if (next == null) prefix
+    else  queueContents(deleteMinBy(q, coerceCriteria), (prefix << next))
+}
+
 var t1r0 = newTree(1000)
 var t2r0 = newTree(200)
 
@@ -229,7 +236,7 @@ var t2r2 = {
                     ]
                 }
             ])
-        }
+        },
     ],
     "findMinBy" describedBy [
         "It should return null for an empty queue" in do {
@@ -293,7 +300,7 @@ var t2r2 = {
                 children: [newTree(10000), t1r1] ++ t3r1.children
             }])
         },
-        // this is such a cool consequence of the algorithm
+        // this is such a cool consequence of the algorithm. See illustration in ExampleQueueMapping field ranks.
         "It should produce a queue with trees whose ranks make a skew binomial number" in do {
             var insertCount = randomInt(500)
             var skewQueue = (1 to insertCount) reduce (n, q: BinomialQueue = []) ->
@@ -305,7 +312,36 @@ var t2r2 = {
                 count * digitValue
             })
             ---
-            skewBinaryValue must equalTo(insertCount)   
+            skewBinaryValue must equalTo(insertCount)
         }
     ]},
+    "skewDeleteMinBy" describedBy [
+        "It should delete only item in a unit queue" in do {
+            skewDeleteMinBy([newTree(4)], coerceCriteria) must equalTo([])
+        },
+        "It should delete smallest from a simple queue" in do {
+            skewDeleteMinBy([newTree(1), newTree(0)], coerceCriteria) must equalTo([newTree(1)])
+        },
+        "It should produce the same tree when inserting and then deleting the smallest value" in do {
+            var moderatelySizedQ = (0 to 200) reduce (n, q:BinomialQueue = []) ->
+                skewInsertBy(randomInt(1000), q, coerceCriteria)
+            var originalContents = queueContents(moderatelySizedQ)
+            var afterInsertingSmallest = skewInsertBy(-1, moderatelySizedQ, coerceCriteria)
+            // this test is slower because of the conversions back to array for comparison
+            ---
+            queueContents(skewDeleteMinBy(afterInsertingSmallest, coerceCriteria)) must equalTo(originalContents)
+        },
+        "It should delete the smallest after many other inserts" in do {
+            // 10 numbers >= 100
+            var startQ = (1 to 10) reduce (n, q=[]) -> 
+                skewInsertBy(randomInt(100) + 100, q, coerceCriteria)
+            var newSmallestQ = skewInsertBy(-1, startQ, coerceCriteria)
+            var withCheckValueQ = skewInsertBy(0, newSmallestQ, coerceCriteria)
+            var moreInsertsQ = (1 to 20) reduce (n, q=withCheckValueQ) ->
+                skewInsertBy(randomInt(100) + 100, q, coerceCriteria)
+            var testQ = deleteMinBy(moreInsertsQ, coerceCriteria)
+            ---
+            findMinBy(testQ, coerceCriteria) must equalTo(0)
+        }
+    ],
 ]
