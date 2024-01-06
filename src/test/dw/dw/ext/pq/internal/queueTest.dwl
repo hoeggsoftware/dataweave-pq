@@ -2,6 +2,7 @@
 import * from dw::test::Tests
 import * from dw::test::Asserts
 
+import * from dw::ext::pq::Types
 import * from dw::ext::pq::internal::tree
 import * from dw::ext::pq::internal::queue
 
@@ -282,6 +283,29 @@ var t2r2 = {
                     children: [newTree(1), newTree(2)] // this is not a valid binomial tree! but it is a skew binomial tree
                 }
             ])
+        },
+        "It should use type B skew when inserting into queue with smallest node in higher rank tree" in do {
+            var q = [t1r1, t3r1] // t3r1 data is very small data
+            ---
+            skewInsertBy(10000, q, coerceCriteria) must equalTo([{
+                data: t3r1.data,
+                rank: 2,
+                children: [newTree(10000), t1r1] ++ t3r1.children
+            }])
+        },
+        // this is such a cool consequence of the algorithm
+        "It should produce a queue with trees whose ranks make a skew binomial number" in do {
+            var insertCount = randomInt(500)
+            var skewQueue = (1 to insertCount) reduce (n, q: BinomialQueue = []) ->
+                skewInsertBy(n, q, coerceCriteria)
+            var ranks = (0 to 8) map (rank) -> sizeOf(skewQueue filter (t) -> t.rank == rank)
+            var skewBinaryValue = sum(ranks map (count, index) -> do {
+                var digitValue = (2 pow (index + 1)) - 1
+                ---
+                count * digitValue
+            })
+            ---
+            skewBinaryValue must equalTo(insertCount)   
         }
     ]},
 ]
