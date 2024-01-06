@@ -30,6 +30,7 @@ var oneMoreInsert = afterInserts insert { name: "Someday", inserted: 1000000 }
 ---
 {
   next: next(afterInserts),
-  nextNext: next(deleteNext(afterInserts))
+  afterInserts: afterInserts.queue,
+  nextNext: next(log(deleteNext(log(afterInserts))))
 
 }

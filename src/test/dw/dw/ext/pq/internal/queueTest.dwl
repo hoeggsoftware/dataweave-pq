@@ -322,6 +322,12 @@ var t2r2 = {
         "It should delete smallest from a simple queue" in do {
             skewDeleteMinBy([newTree(1), newTree(0)], coerceCriteria) must equalTo([newTree(1)])
         },
+        "It should delete when a high rank tree needs to be split" in do {
+            var sevenQ = (1 to 7) reduce (n, q=[]) -> skewInsertBy(n, q, coerceCriteria)
+            ---
+            queueContents(skewDeleteMinBy(sevenQ, coerceCriteria)) must equalTo([2, 3, 4, 5, 6, 7])
+        },
+
         "It should produce the same tree when inserting and then deleting the smallest value" in do {
             var moderatelySizedQ = (0 to 200) reduce (n, q:BinomialQueue = []) ->
                 skewInsertBy(randomInt(1000), q, coerceCriteria)
@@ -335,10 +341,14 @@ var t2r2 = {
             // 10 numbers >= 100
             var startQ = (1 to 10) reduce (n, q=[]) -> 
                 skewInsertBy(randomInt(100) + 100, q, coerceCriteria)
+            // smallest
             var newSmallestQ = skewInsertBy(-1, startQ, coerceCriteria)
+            // next smallest so we can check after deleting smallest
             var withCheckValueQ = skewInsertBy(0, newSmallestQ, coerceCriteria)
+            // 20 numbers >= 100
             var moreInsertsQ = (1 to 20) reduce (n, q=withCheckValueQ) ->
                 skewInsertBy(randomInt(100) + 100, q, coerceCriteria)
+            // after deleting smallest
             var testQ = deleteMinBy(moreInsertsQ, coerceCriteria)
             ---
             findMinBy(testQ, coerceCriteria) must equalTo(0)

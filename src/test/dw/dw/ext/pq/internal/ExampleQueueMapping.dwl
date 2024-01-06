@@ -9,6 +9,7 @@ fun coerceCriteria(data: Any) = data as Comparable
 var smallSkewQueue =  [newTree(0), newTree(1)]
 var largeQueue = (1 to 500) reduce (n, q: BinomialQueue = []) ->
     skewInsertBy(randomInt(5000), q, coerceCriteria)
+var sevenInserts = (1 to 7) reduce (n, q = []) -> skewInsertBy(n, q, coerceCriteria)
 ---
 {
   delete: skewDeleteMinBy([newTree(1), newTree(0)], coerceCriteria),
@@ -25,5 +26,5 @@ var largeQueue = (1 to 500) reduce (n, q: BinomialQueue = []) ->
         treeCountByRank: treeCount,
         skewBinaryValue: skewBinaryValue
     }
-  }
+  },
 }

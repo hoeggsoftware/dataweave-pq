@@ -244,7 +244,7 @@ fun link(t1: BinomialTree, t2: BinomialTree): BinomialTree =
                 children: [
                     newTree("zucchini"),
                     t1R1,
-                    newTree("dandelion")
+                    newTree("dandelion"),
                 ]
             })
         }

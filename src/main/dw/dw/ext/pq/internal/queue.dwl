@@ -81,12 +81,11 @@ fun deleteMinBy(q: BinomialQueue, criteria: Criteria): BinomialQueue = do {
 
 @Internal(permits = ["dw::ext::pq::internal", "dw::ext::pq"])
 fun skewDeleteMinBy(q: BinomialQueue, criteria: Criteria): BinomialQueue = do {
-  var sorted = q orderBy (t) -> (criteria(t.data))
-  var minTree = sorted[0]
-  var remaining = sorted drop 1
+  var minTree = q minBy (t) -> criteria(t.data)
+  var remaining = q - minTree
   var orphans = minTree.children partition ((t) -> t.rank == 0)
-  var r0Orphans: BinomialQueue = (remaining.success default []) as BinomialQueue
-  var otherOrphans: BinomialQueue = (remaining.failure default []) as BinomialQueue
+  var r0Orphans: BinomialQueue = (orphans.success default []) as BinomialQueue
+  var otherOrphans: BinomialQueue = (orphans.failure default []) as BinomialQueue
   var meldedHighRankTrees = skewMeldBy(otherOrphans, remaining, criteria)
   ---
   r0Orphans reduce (t, newQ = meldedHighRankTrees) ->

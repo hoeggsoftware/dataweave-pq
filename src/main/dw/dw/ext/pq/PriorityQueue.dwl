@@ -31,7 +31,7 @@ fun init<T>(criteria: Criteria<T>): PriorityQueue<T> = {
 }
 
 fun insert<T>(q: PriorityQueue<T>, data: T): PriorityQueue<T> = {
-  queue: insBy(newTree(data), q.queue, q.criteria),
+  queue: skewInsertBy(data, q.queue, q.criteria),
   criteria: q.criteria
 }
 
@@ -39,6 +39,6 @@ fun next<T>(q: PriorityQueue<T>): T | Null =
   q.queue findMinBy q.criteria
 
 fun deleteNext<T>(q: PriorityQueue<T>): PriorityQueue<T> = {
-  queue: deleteMinBy(q.queue, q.criteria),
+  queue: skewDeleteMinBy(q.queue, q.criteria),
   criteria: q.criteria
 }
