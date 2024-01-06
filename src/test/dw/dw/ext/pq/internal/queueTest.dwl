@@ -2,7 +2,7 @@
 import * from dw::test::Tests
 import * from dw::test::Asserts
 
-import * from pq::internal::queue
+import * from dw::ext::pq::internal::queue
 
 var t1r0 = {
     data: 1000,

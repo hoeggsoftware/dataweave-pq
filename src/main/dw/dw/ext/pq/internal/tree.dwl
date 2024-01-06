@@ -19,14 +19,14 @@
 import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 
-@Internal(permits = ["pq::", "dw::ext::pq"])
+@Internal(permits = ["dw::ext::pq::internal", "dw::ext::pq"])
 fun newTree<T>(value: T): BinomialTree = {
     data: value,
     rank: 0,
     children: []
 }
 
-@Internal(permits = ["pq::"])
+@Internal(permits = ["dw::ext::pq::internal"])
 fun isValidBinomialTree(tree: BinomialTree, rank: Number = -1): Boolean = do {
     var rankToCheck = if (rank == -1) tree.rank else rank
     ---
@@ -37,11 +37,11 @@ fun isValidBinomialTree(tree: BinomialTree, rank: Number = -1): Boolean = do {
     )
 }
 
-@Internal(permits=["pq::"])
+@Internal(permits=["dw::ext::pq::internal"])
 fun link(t1: BinomialTree, t2: BinomialTree): BinomialTree =
     linkBy(t1, t2, (data) -> data as Comparable)
 
-@Internal(permits=["pq::"])
+@Internal(permits=["dw::ext::pq::internal"])
 fun linkBy<T>(t1:BinomialTree, t2: BinomialTree, criteria: (data: T) -> Comparable): BinomialTree = do {
     if (criteria(t1.data) > criteria(t2.data)) linkBy(t2, t1, criteria)
     else {
