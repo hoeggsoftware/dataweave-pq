@@ -3,10 +3,26 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>software.hoegg</groupId>
-    <artifactId>dw-ext-pq</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>dataweave-pq</artifactId>
+    <version>0.0.0</version>
     <packaging>dw-library</packaging>
-    <name>dw-ext-pq</name>
+    <name>Priority Queue Dataweave Library</name>
+    <description>An efficient pure functional priority queue for use in [DataWeave 2.0](https://dataweave.mulesoft.com/)</description>
+    <url>https://github.com/hoeggsoftware/dataweave-pq</url>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Ryan Hoegg</name>
+            <email>ryan@hoegg.software</email>
+            <organization>Hoegg Software, Co.</organization>
+            <organizationUrl>https://hoegg.software</organizationUrl>
+        </developer>
+    </developers>
 
     <properties>
         <data.weave.version>2.5.0</data.weave.version>
@@ -59,11 +75,11 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:git@github.com:hoeggsoftware/dw-ext-pq.git</connection>
-        <developerConnection>scm:git:git@github.com:hoeggsoftware/dw-ext-pq.git</developerConnection>
-        <url>https://github.com/hoeggsoftware/dw-ext-pq</url>
+        <connection>scm:git@github.com:hoeggsoftware/dataweave-pq.git</connection>
+        <developerConnection>scm:git@github.com:hoeggsoftware/dataweave-pq.git</developerConnection>
+        <url>https://github.com/hoeggsoftware/dataweave-pq</url>
       <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
@@ -131,7 +147,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -149,17 +165,6 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.13</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
