@@ -19,6 +19,27 @@ import * from dw::test::Tests
 import * from dw::test::Asserts
 
 import * from dw::ext::pq::PriorityQueue
+
+fun queueContents<T>(q: PriorityQueue<T>, prefix: Array<T> = []): Array<T> = do {
+    var min = next(q)
+    ---
+    if (min == null) prefix
+    else queueContents(deleteNext(q), (prefix << min))
+}
+
+type Node = {
+  value: Number,
+  otherData: Array<String>
+}
+var words = ["potato", "dataweave", "mule", "functional", "Mariano", "Ryan", "coffee", "tea", "Dijkstra", "github", "Oklahoma", "Argentina", "binomial", "skew"]
+
+var nodeCriteria = (node: Node) -> node.value
+
+fun randomNode(): Node =
+  {
+    value: random() * 10000,
+    otherData: (3 to (randomInt(21) + 3)) map (i) -> words[randomInt(sizeOf(words))]
+  }
 ---
 "PriorityQueue" describedBy [
 
@@ -48,4 +69,32 @@ import * from dw::ext::pq::PriorityQueue
           })
         },
     ],
+    "correctness checks" describedBy [
+        "It should delete only one element for many different queue sizes" in do {
+            var sizes = (1 to 200) ++ [250,400,600,1000,10000]
+            var queues = sizes map (queueSize) -> do {
+              var minPosition = randomInt(queueSize)
+              var minNode = {
+                value: -1,
+                otherData: ["this", "is", "the", "minimum", "node"]
+              }
+              var nodes = (1 to queueSize) map (i, index) -> 
+                if (index == minPosition) minNode else randomNode()
+              var checkQueue = nodes reduce (node, q=init(nodeCriteria)) ->
+                (q insert node)
+              ---
+              {
+                queueSize: queueSize,
+                minNode: minNode,
+                remaining: nodes - minNode,
+                q: checkQueue,
+                qNext: next(checkQueue),
+                qRemaining: queueContents(deleteNext(checkQueue))
+              }
+            }
+            ---
+            (queues map (q) -> (sizeOf(q.remaining))) must equalTo(
+              queues map (q) -> (sizeOf(q.qRemaining)))
+        }
+    ] 
 ]

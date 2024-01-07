@@ -45,16 +45,27 @@ fun skewInsertBy<T>(data: T, q: BinomialQueue, criteria: Criteria): BinomialQueu
 
 @Internal(permits = ["dw::ext::pq::internal", "dw::ext::pq"])
 fun meldBy(q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria, transform: (q: BinomialQueue) -> BinomialQueue = (q) -> q): BinomialQueue = do {
+  meldTreesBy([], q1, q2, criteria, transform)
+}
+
+/**
+ * Helper function for melding large queues with tail recursion
+ */
+@Internal(permits = ["dw::ext::pq::internal"])
+fun meldTreesBy(trees: Array<BinomialTree>, q1: BinomialQueue, q2: BinomialQueue, criteria: Criteria, transform: (q: BinomialQueue) -> BinomialQueue = (q) -> q): BinomialQueue = do {
+  fun insAll(meldedQueue: BinomialQueue): BinomialQueue =
+    trees reduce(t, q = meldedQueue) ->
+      insBy(t, q, criteria)
   var tq1 = transform(q1)
   var tq2 = transform(q2)
   ---
-  if (isEmpty(tq1)) tq2
-  else if (isEmpty(tq2)) tq1
+  if (isEmpty(tq1)) insAll(tq2)
+  else if (isEmpty(tq2)) insAll(tq1)
   else if (tq1[0].rank == tq2[0].rank)
-    insBy(linkBy(tq1[0], tq2[0], criteria), meldBy(tq1 drop 1, tq2 drop 1, criteria, transform), criteria)
+    meldTreesBy(linkBy(tq1[0], tq2[0], criteria) >> trees, tq1 drop 1, tq2 drop 1, criteria, transform)
   else if (tq1[0].rank < tq2[0].rank)
-    tq1[0] >> meldBy(tq1 drop 1, tq2, criteria, transform)
-  else meldBy(tq2, tq1, criteria)
+    meldTreesBy(tq1[0] >> trees, tq1 drop 1, tq2, criteria, transform)
+  else meldTreesBy(trees, tq2, tq1, criteria)
 }
 
 @Internal(permits = ["dw::ext::pq::internal", "dw::ext::pq"])

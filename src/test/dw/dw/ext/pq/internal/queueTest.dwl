@@ -327,7 +327,6 @@ var t2r2 = {
             ---
             queueContents(skewDeleteMinBy(sevenQ, coerceCriteria)) must equalTo([2, 3, 4, 5, 6, 7])
         },
-
         "It should produce the same tree when inserting and then deleting the smallest value" in do {
             var moderatelySizedQ = (0 to 200) reduce (n, q:BinomialQueue = []) ->
                 skewInsertBy(randomInt(1000), q, coerceCriteria)
