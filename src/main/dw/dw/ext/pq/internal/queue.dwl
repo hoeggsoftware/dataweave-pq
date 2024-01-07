@@ -14,7 +14,6 @@
    limitations under the License.
  */
 %dw 2.0
-
 import * from dw::core::Arrays
 import * from dw::ext::pq::Types
 import * from dw::ext::pq::internal::tree
@@ -37,7 +36,8 @@ fun skewInsertBy<T>(data: T, q: BinomialQueue, criteria: Criteria): BinomialQueu
   ---
   if ((sizeOf(q) < 2) or (q[0].rank < q[1].rank))
     newRank0 >> q
-  else // ranks must be equal since lower ranks come before higher ranks
+  else 
+    // ranks must be equal since lower ranks come before higher ranks
     // now we skew link, this is O(1) while insBy is O(log n)
     skewLinkBy(newRank0, q[0], q[1], criteria) >> (q drop 2)
 }

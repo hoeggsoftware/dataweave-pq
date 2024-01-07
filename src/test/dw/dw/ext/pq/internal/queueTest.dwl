@@ -222,7 +222,7 @@ var t2r2 = {
             ])
         },
         "it should produce a valid skew binomial queue when both have two of the same rank" in do {
-            log(skewMeldBy([newTree(0), t1r1, t1r2], [t2r1, t3r1, t2r2], coerceCriteria)) must equalTo([
+            skewMeldBy([newTree(0), t1r1, t1r2], [t2r1, t3r1, t2r2], coerceCriteria) must equalTo([
                 newTree(0),
                 t1r1,
                 t1r2,
@@ -287,7 +287,7 @@ var t2r2 = {
                 {
                     data: 0,
                     rank: 1,
-                    children: [newTree(1), newTree(2)] // this is not a valid binomial tree! but it is a skew binomial tree
+                    children: [newTree(2), newTree(1)] // this is not a valid binomial tree! but it is a skew binomial tree
                 }
             ])
         },

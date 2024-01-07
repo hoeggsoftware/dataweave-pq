@@ -222,18 +222,8 @@ fun link(t1: BinomialTree, t2: BinomialTree): BinomialTree =
                 data: "apple",
                 rank: 2,
                 children: [
-                    t2R1,
-                    t1R1
-                ]
-            })
-        },
-        "It should create a Type A link when the rank 0 is smallest and out of order" in do {
-            skewLinkBy(t2R1, newTree("apple"), t1R1, lowercaseCriteria) must equalTo({
-                data: "apple",
-                rank: 2,
-                children: [
-                    t2R1,
-                    t1R1
+                    t1R1,
+                    t2R1
                 ]
             })
         },

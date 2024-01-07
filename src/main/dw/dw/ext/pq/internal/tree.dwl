@@ -53,15 +53,26 @@ fun linkBy<T>(t1:BinomialTree, t2: BinomialTree, criteria: Criteria): BinomialTr
  */
  @Internal(permits=["dw::ext::pq::internal"])
 fun skewLinkBy<T>(t1: BinomialTree, t2: BinomialTree, t3: BinomialTree, criteria: Criteria): BinomialTree = do {
-    var dataOrdered = [t1, t2, t3] orderBy (t) -> criteria(t.data)
-    var root = dataOrdered[0] // if this is the 
-    var children = dataOrdered drop 1 orderBy (t) -> t.rank
-    var rank = (if (t1.rank > t2.rank) t1.rank else t2.rank) + 1
-    // not considering t3 rank because only one rank should be 0, and the other two should match
+    var c1 = criteria(t1.data)
+    var c2 = criteria(t2.data)
+    var c3 = criteria(t3.data)
     ---
-    {
-        data: root.data,
-        rank: rank,
-        children: children ++ root.children
-    }
+    if (c2 <= c1 and c2 <= c3)      // Type B
+        {
+            data: t2.data,
+            rank: t2.rank + 1,
+            children: [t1, t3] ++ t2.children
+        }
+    else if (c3 <= c1 and c3 <= c2) // Type B
+        {
+            data: t3.data,
+            rank: t3.rank + 1,
+            children: [t1, t2] ++ t3.children
+        }
+    else                            // Type A
+        {
+            data: t1.data,
+            rank: t2.rank + 1,
+            children: [t2, t3]
+        }
 }

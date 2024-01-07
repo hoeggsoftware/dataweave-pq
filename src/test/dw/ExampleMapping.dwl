@@ -55,35 +55,39 @@ fun randomNode(): Node =
   }
 
 var queueChecks = do {
-            var queues = ([1000, 8888, 33333, 777777]) map (queueSize) -> do {
-              var minPosition = randomInt(queueSize)
-              var minNode = {
-                value: -1,
-                otherData: ["this", "is", "the", "minimum", "node"]
-              }
-              var nodes = (1 to queueSize) map (i, index) -> 
-                if (index == minPosition) minNode else randomNode()
-              var insertStep = duration(() -> (nodes reduce (node, q=init(nodeCriteria)) ->
-                (q insert node)))
-              var checkQueue = insertStep.result
-              ---
-              {
-                queueSize: queueSize,
-                insertTime: insertStep.time,
-                minNode: minNode,
-                arrayDeleteExecutionTime: duration(() -> (nodes - minNode)).time,
-                q: checkQueue,
-                qNext: duration(() -> next(checkQueue)),
-                qDeleteExecutionTime: duration(() -> deleteNext(checkQueue)).time
-              }
-            }
-            ---
-            queues map (q) -> q - "q"
-        }
+  var queues = ([1000, 8888, 33333, 75000, 200000]) map (queueSize) -> do {
+    var minPosition = randomInt(queueSize)
+    var minNode = {
+      value: -1,
+      otherData: ["this", "is", "the", "minimum", "node"]
+    }
+    var nodes = (1 to queueSize) map (i, index) -> 
+      if (index == minPosition) minNode else randomNode()
+    var insertStep = duration(() -> (nodes reduce (node, q=init(nodeCriteria)) ->
+      (q insert node)))
+    var checkQueue = insertStep.result
+    ---
+    {
+      queueSize: queueSize,
+      insertTime: insertStep.time,
+      minNode: minNode,
+      arrayDeleteExecutionTime: duration(() -> (nodes - minNode)).time,
+      q: checkQueue,
+      qNext: duration(() -> next(checkQueue)),
+      qDeleteExecutionTime: duration(() -> deleteNext(checkQueue)).time
+    }
+  }
+  ---
+  queues map (q) -> q - "q"
+}
 ---
 {
   next: next(afterInserts),
   afterInserts: afterInserts.queue,
   nextNext: next(deleteNext(afterInserts)),
-  queueChecks: queueChecks
+  queueChecks: queueChecks,
+  plainArray: [1000, 8888, 33333, 75000, 200000] map (arraySize) -> {
+    arraySize: arraySize,
+    insertTime: duration(() -> (1 to arraySize) reduce (n, a=[]) -> n >> a).time
+  }
 }
