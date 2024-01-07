@@ -3,6 +3,72 @@
 
 This is an open source dataweave library to provide an efficient priority queue.
 
+## Installation
+This library is not yet available in maven central. (#2)
+
+One way to incorporate this library in your mule application is to publish it into your organization's MuleSoft Anypoint Exchange. To do this, you should fork the github repository and modify the `pom.xml`.  An example of how to do it can be found [here](https://developer.mulesoft.com/tutorials-and-howtos/dataweave/dataweave-libraries-in-exchange-getting-started/) thanks to [Alex Martinez](https://github.com/alexandramartinez). 
+
+## Usage
+
+### Import dw::ext::pq
+
+You will need the functions `init`, `insert`, `next`, and `deleteNext`, which all operate on the type `PriorityQueue<T>`.  Import them like so:
+
+```dataweave
+import * from dw::ext::pq::PriorityQueue
+```
+
+### Create your priority queue
+Create your queue using the `init` function.  You will need to provide a criteria function, which will be used to determine whether one item has priority over another item. Items that are "smaller" than others have higher priority, so if you want higher values to come first, provide a criteria function that returns a negative value.  This is the same way you would do it with `orderBy`.
+
+```dataweave
+type Node = {
+    name: String,
+    priority: Number
+}
+
+var emptyQueue = init( (node: Node) -> node.priority )
+```
+
+### Adding things
+
+Add elements to the priority queue using the `insert` function, which will return the new queue that includes the element.
+
+```dataweave
+var qWithOneItem = emptyQueue insert {
+    name: "Visual Studio Code", 
+    priority: 2 
+}
+
+var qWithTwoItems = qWithOneItem insert {
+    name: "Emacs",
+    priority: 3
+}
+
+var qWithThreeItems = qWithTwoItems insert {
+    name: "Anypoint Studio",
+    priority: 1
+}
+```
+
+### Retrieving things
+
+Since dataweave is a functional language, reading items from a priority queue is done separately from removing items. These steps are represented by the `next` and `deleteNext` functions.
+
+The `next` function returns the item with the smallest value according to the criteria provided in the `init` function.
+
+```dataweave
+var firstByPriority = next(qWithThreeItems)
+// Anypoint Studio node
+```
+
+The `deleteNext` function returns a priority queue that no longer contains the item with the smallest value, according to the criteria provided in the `init` function.
+
+```dataweave
+var afterRemovalQueue = deleteNext(qWithThreeItems)
+// contains only Visual Studio Code and Emacs
+```
+
 ## Inspiration
 This work is based on publications by Gerth Stølting Brodal, Chris Okasaki, and David J. King.  Special thanks to [@amitdev](https://github.com/amitdev) for his [Purely Functional Priority Queues](https://amitdev.github.io/posts/2014-03-06-priority-queue/) blog as well.
 
