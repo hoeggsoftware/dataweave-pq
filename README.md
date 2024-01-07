@@ -4,7 +4,7 @@
 This is an open source dataweave library to provide an efficient priority queue.
 
 ## Inspiration
-This work is based on some papers I found by Gerth Stølting Brodal, Chris Okasaki, and David J. King.  Special thanks to [@amitdev](https://github.com/amitdev) for his [Purely Functional Priority Queues](https://amitdev.github.io/posts/2014-03-06-priority-queue/) blog as well.
+This work is based on publications by Gerth Stølting Brodal, Chris Okasaki, and David J. King.  Special thanks to [@amitdev](https://github.com/amitdev) for his [Purely Functional Priority Queues](https://amitdev.github.io/posts/2014-03-06-priority-queue/) blog as well.
 
 * [Functional Binomial Queues](https://www.cs.cornell.edu/courses/cs312/2005fa/hw/binomial-queues.pdf)
 * [Optimal Purely Functional Priority Queues](https://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf)
