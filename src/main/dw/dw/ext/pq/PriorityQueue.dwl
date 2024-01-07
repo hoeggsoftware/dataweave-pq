@@ -21,24 +21,39 @@ import * from dw::ext::pq::internal::queue
 import * from dw::ext::pq::internal::tree
 
 type PriorityQueue<T> = {
+  root: T | Null,
   queue: BinomialQueue,
   criteria: Criteria<T>
 }
 
 fun init<T>(criteria: Criteria<T>): PriorityQueue<T> = {
+  root: null,
   queue: [],
   criteria: criteria
 }
 
-fun insert<T>(q: PriorityQueue<T>, data: T): PriorityQueue<T> = {
-  queue: skewInsertBy(data, q.queue, q.criteria),
-  criteria: q.criteria
-}
+fun insert<T>(q: PriorityQueue<T>, data: T): PriorityQueue<T> =
+  if (q.root == null) q update {
+    case .root -> data
+  }
+  else do {
+    var cOld = q.criteria(q.root)
+    var cNew = q.criteria(data)
+    var newRoot = if (cOld <= cNew) q.root else data
+    var toInsert = if (cOld <= cNew) data else q.root
+    ---
+    {
+      root: newRoot,
+      queue: skewInsertBy(toInsert, q.queue, q.criteria),
+      criteria: q.criteria
+    }
+  }
 
 fun next<T>(q: PriorityQueue<T>): T | Null =
-  q.queue findMinBy q.criteria
+  q.root
 
 fun deleteNext<T>(q: PriorityQueue<T>): PriorityQueue<T> = {
+  root: findMinBy(q.queue, q.criteria),
   queue: skewDeleteMinBy(q.queue, q.criteria),
   criteria: q.criteria
 }
