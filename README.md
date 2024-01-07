@@ -4,7 +4,7 @@
 This is an open source dataweave library to provide an efficient priority queue.
 
 ## Installation
-This library is not yet available in maven central. (#2)
+This library is not yet available in maven central. ([#2](https://github.com/hoeggsoftware/dataweave-pq/issues/2))
 
 One way to incorporate this library in your mule application is to publish it into your organization's MuleSoft Anypoint Exchange. To do this, you should fork the github repository and modify the `pom.xml`.  An example of how to do it can be found [here](https://developer.mulesoft.com/tutorials-and-howtos/dataweave/dataweave-libraries-in-exchange-getting-started/) thanks to [Alex Martinez](https://github.com/alexandramartinez). 
 
