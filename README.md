@@ -1,5 +1,6 @@
 # Priority Queue in DataWeave
-[![Unit tests](https://github.com/hoeggsoftware/dw-ext-pq/actions/workflows/maven.yml/badge.svg)](https://github.com/hoeggsoftware/dw-ext-pq/actions/workflows/maven.yml)
+[![Unit tests](https://github.com/hoeggsoftware/dw-ext-pq/actions/workflows/maven.yml/badge.svg)](https://github.com/hoeggsoftware/dw-ext-pq/actions/workflows/maven.yml) ![Maven Central](https://img.shields.io/maven-central/v/software.hoegg/dataweave-pq)
+
 
 This is an open source dataweave library to provide an efficient priority queue.
 
